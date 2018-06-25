@@ -3,4 +3,5 @@ from audio_summariser.summariser import Summariser
 
 a = AudioFile("../wav/Euronews_fra_A_GHn7RkzPFvY_LItalie-accueille-Meriam-la-Soudanaise-qui-a-chapp--la-peine-de-mort.wav")
 s = Summariser()
-s.summarise_file(a)
+y_sum = s.summarise_file(a)
+print(y_sum.shape)

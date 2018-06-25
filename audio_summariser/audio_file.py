@@ -14,6 +14,7 @@ class AudioFile:
     y, self.sr = librosa.load(path)
     self.y_mono = librosa.to_mono(y)  # since we don't take into account both the audio channels,
                                       # we'll always process the files as mono.
+    self.length = librosa.get_duration(y)
 
 
     self.audio_segments = []
