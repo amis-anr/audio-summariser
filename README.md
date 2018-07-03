@@ -10,6 +10,8 @@ The main process for building such summaries is (roughly) as follows:
 4. concatenate the audio frames of the top ranked segments, up to a given percentage of the original file (default to 20%), which gives the audio summary.
 
 
+You can view the [example notebook](https://github.com/amis-anr/audio-summariser/blob/master/example-audio-summary.ipynb) for an overview.
+
 ### Linear regression for predicting the informativity of audio parts
 
 The summariser heavily relies on estimating the informativity of the segments.
