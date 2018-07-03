@@ -14,6 +14,7 @@ class AudioFile:
     y, self.sr = librosa.load(path)
     self.y_mono = librosa.to_mono(y)  # since we don't take into account both the audio channels,
                                       # we'll always process the files as mono.
+    self.length = librosa.get_duration(y)
 
 
     self.audio_segments = []
@@ -21,16 +22,16 @@ class AudioFile:
     self.bounds_mfcc = None
     self.bound_times_mfccs = None
 
-
-  def segment_file(self,mode='background'):
-    S = None
-
+  def compute_mfccs(self,mode='background'):
     if mode == 'background':
       S,p = self.get_background_audio()
+      self.mfccs = librosa.feature.mfcc(S=S, sr=self.sr, n_fft=512, hop_length=256, n_mfcc=25)
     else:
-      S,p = librosa.magphase(librosa.stft(self.y_mono))
+      self.mfccs = librosa.feature.mfcc(y=self.y_mono, sr=self.sr, n_fft=512, hop_length=256, n_mfcc=25)
 
-    self.mfccs = librosa.feature.mfcc(S=S, sr=self.sr, n_fft=512, hop_length=256, n_mfcc=25)
+
+  def segment_file(self):
+    self.compute_mfccs()
     self.bounds_mfcc = librosa.segment.agglomerative(self.mfccs, round(librosa.get_duration(y=self.y_mono,sr=self.sr)*20/60))
     self.bound_times_mfccs = librosa.frames_to_time(self.bounds_mfcc, sr=self.sr) # extraction of the delimitations
 

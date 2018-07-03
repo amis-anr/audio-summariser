@@ -4,9 +4,12 @@ import scipy.stats as ss
 
 class AudioSegment:
 
-  def __init__(self,v_mfccs,start_frame):
+  def __init__(self,v_mfccs,start_frame_ratio,index,length):
     self.mfcc_mat = v_mfccs
-    self.start    = start_frame
+    self.start    = start_frame_ratio
+    self.index    = index
+    self.length   = length
+    self.score    = 0
 
   def compute_feature_stats(self):#S):
     delta_mfccs  = librosa.feature.delta(self.mfcc_mat,mode='nearest') 
@@ -28,3 +31,8 @@ class AudioSegment:
     
     return np.hstack((metric_min, metric_max, metric_median,metric_mean,
                       metric_variance,metric_skewness,metric_kurtosis,mean_d,mean_d2,var_d,var_d2,length,self.start)) 
+
+  def compute_score(self,bounds,boundsp1,l_ratio,informativity,start_time):
+    self.score = 1/(1+np.exp(-((boundsp1-bounds)-5))) * l_ratio * np.exp(-1*start_time/(boundsp1-bounds)) * informativity
+
+    return self.score
