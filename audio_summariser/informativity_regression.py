@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import os,time
 
 import numpy as np
@@ -118,4 +119,3 @@ class InfoLinearRegression:
       _.append(model.score(X_test,y_test))
 
     print('Averaged model score over 10 iterations: '+str(sum(_)/10))
-    
